@@ -5,7 +5,11 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use ZipArchive;
+use AppBundle\Entity\gasto;
+use AppBundle\Entity\orgao;
+use AppBundle\Entity\pessoa;
+use AppBundle\Entity\unidadeGestora;
+
 
 class GastoController extends Controller
 {
@@ -40,6 +44,9 @@ class GastoController extends Controller
 
 		$this->trataRegistro();
 	// $this->extraiZip();
+
+	return new Response (
+		'<html><body>Banco de dados atualizado</body></html>');
     }
 
 	public function extraiZip()  {
@@ -63,7 +70,7 @@ class GastoController extends Controller
 		if ($handle) {
 			$line = fgets($handle);
 			while (($line = fgets($handle)) !== false) {
-                              $this->criaProduto($line);
+                              $this->criaGasto($line);
    		 	}
 
   		 	 fclose($handle);
@@ -73,13 +80,56 @@ class GastoController extends Controller
 
 	}
 
-	public function criaProduto($line) {
-		echo $line;
+	public function criaGasto($line) {
 		$vector = explode ("	" , $line );
-		$gasto = new gasto();
+
+		$em = $this->getDoctrine()->getManager();
+
+		$portador = new pessoa();
+		$portador->setNomePessoa($vector[9]);
+		$em->persist($portador);
+
+	        $favorecido = new pessoa();
+                $favorecido->setNomePessoa($vector[13]);
+		$em->persist($favorecido);
+
 		$orgaoSuperior = new orgao();
-		echo $vector[0];
-//		$orgaoSuperior->setNome(vector[1]);
+		$orgaoSuperior->setNomeOrgao($vector[1]);
+		$em->persist($orgaoSuperior);
+
+		$orgaoSubordinado = new orgao();
+                $orgaoSubordinado->setNomeOrgao($vector[3]);
+		$em->persist($orgaoSubordinado);
+
+		$unidadeGestora = new unidadeGestora();
+                $unidadeGestora->setNomeUnidade($vector[5]);
+		$em->persist($orgaoSubordinado);
+
+		$gasto = new gasto();
+		$gasto->setOrgaoSuperior($orgaoSuperior);
+		$gasto->setOrgaoSubordinado($orgaoSubordinado);
+		$gasto->setUnidadeGestora($unidadeGestora);
+		$gasto->setAnoExtrato($vector[6]);
+		$gasto->setMesExtrato($vector[7]);
+		$gasto->setPortador($portador);
+
+		echo "ID portador ";
+		echo  $portador->getId();
+		echo "Nome portador "; 
+		echo $portador->getNomePessoa();
+		$gasto->setNomeTransacao($vector[10]);
+		$gasto->setDataTransacao($vector[11]);
+		$gasto->setFavorecido($favorecido);
+//		$gasto->setValorTransacao($vector[14]);
+		$gasto->setValorTransacao(100.00);
+		$em->persist($gasto);
+
+		$em->flush();
+		echo "flushou!";
+	}
+
+	public function __autoload ($classe) {
+		include_once("Entity/".$classe."php");
 	}
 }
 
