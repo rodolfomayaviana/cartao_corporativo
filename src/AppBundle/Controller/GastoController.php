@@ -5,10 +5,10 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\gasto;
-use AppBundle\Entity\orgao;
-use AppBundle\Entity\pessoa;
-use AppBundle\Entity\unidadeGestora;
+use AppBundle\Entity\Gasto;
+use AppBundle\Entity\Orgao;
+use AppBundle\Entity\Pessoa;
+use AppBundle\Entity\UnidadeGestora;
 
 
 class GastoController extends Controller
@@ -32,7 +32,7 @@ class GastoController extends Controller
 		curl_setopt($ch, CURLOPT_BINARYTRANSFER,true);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($ch, CURLOPT_FILE, $zipResource);
 		$page = curl_exec($ch);
 
@@ -83,29 +83,37 @@ class GastoController extends Controller
 	public function criaGasto($line) {
 		$vector = explode ("	" , $line );
 
+		echo "valor do arquivo";
+		echo substr($vector[12] , 0 , 3);
+
+		echo "Inf";
+		if( strcmp (substr($vector[12] , 0 , 3) , "Inf") == 0) {
+                        return;
+                }
+
 		$em = $this->getDoctrine()->getManager();
 
-		$portador = new pessoa();
+		$portador = new Pessoa();
 		$portador->setNomePessoa($vector[9]);
 		$em->persist($portador);
 
-	        $favorecido = new pessoa();
+	        $favorecido = new Pessoa();
                 $favorecido->setNomePessoa($vector[13]);
 		$em->persist($favorecido);
 
-		$orgaoSuperior = new orgao();
+		$orgaoSuperior = new Orgao();
 		$orgaoSuperior->setNomeOrgao($vector[1]);
 		$em->persist($orgaoSuperior);
 
-		$orgaoSubordinado = new orgao();
+		$orgaoSubordinado = new Orgao();
                 $orgaoSubordinado->setNomeOrgao($vector[3]);
 		$em->persist($orgaoSubordinado);
 
-		$unidadeGestora = new unidadeGestora();
+		$unidadeGestora = new UnidadeGestora();
                 $unidadeGestora->setNomeUnidade($vector[5]);
 		$em->persist($orgaoSubordinado);
 
-		$gasto = new gasto();
+		$gasto = new Gasto();
 		$gasto->setOrgaoSuperior($orgaoSuperior);
 		$gasto->setOrgaoSubordinado($orgaoSubordinado);
 		$gasto->setUnidadeGestora($unidadeGestora);

@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * unidadeGestora
+ * Pessoa
  *
- * @ORM\Table(name="unidade_gestora")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\unidadeGestoraRepository")
+ * @ORM\Table(name="pessoa")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\pessoaRepository")
  */
-class unidadeGestora
+class Pessoa
 {
     /**
      * @var int
@@ -24,9 +24,9 @@ class unidadeGestora
     /**
      * @var string
      *
-     * @ORM\Column(name="nomeUnidade", type="string", length=255)
+     * @ORM\Column(name="nomePessoa", type="string", length=255)
      */
-    private $nomeUnidade;
+    private $nomePessoa;
 
 
     /**
@@ -40,26 +40,26 @@ class unidadeGestora
     }
 
     /**
-     * Set nomeUnidade
+     * Set nomePessoa
      *
-     * @param string $nomeUnidade
+     * @param string $nomePessoa
      *
-     * @return unidadeGestora
+     * @return pessoa
      */
-    public function setNomeUnidade($nomeUnidade)
+    public function setNomePessoa($nomePessoa)
     {
-        $this->nomeUnidade = $nomeUnidade;
+        $this->nomePessoa = $nomePessoa;
 
         return $this;
     }
 
     /**
-     * Get nomeUnidade
+     * Get nomePessoa
      *
      * @return string
      */
-    public function getNomeUnidade()
+    public function getNomePessoa()
     {
-        return $this->nomeUnidade;
+        return $this->nomePessoa;
     }
 }
