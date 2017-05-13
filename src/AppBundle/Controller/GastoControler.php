@@ -9,7 +9,7 @@ use AppBundle\Entity\Portador;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
-class PortadorController extends Controller {
+class GastoController extends Controller {
 
 	private $em;
 
