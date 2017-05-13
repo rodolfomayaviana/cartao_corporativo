@@ -11,10 +11,10 @@ use AppBundle\Entity\Pessoa;
 use AppBundle\Entity\UnidadeGestora;
 
 
-class GastoController extends Controller
+class DownloadController extends Controller
 {
     /**
-     * @Route("/busca_dado", name="busca_dado")
+     * @Route("/download", name="download")
      */
     public function BuscaDadoAction(Request $request)
     {
@@ -42,15 +42,15 @@ class GastoController extends Controller
 
 	        curl_close($ch);
 
-		$this->trataRegistro();
-	// $this->extraiZip();
+//		$this->trataRegistro();
+  	$this->extraiZip();
 
 	return new Response (
 		'<html><body>Banco de dados atualizado</body></html>');
     }
 
 	public function extraiZip()  {
-		$zip = new ZipArchive;
+		$zip = new ZipArchive64;
         	$extractPath = "archive/";
 
         	if($zip->open($zipFile) != "true"){
@@ -92,11 +92,12 @@ class GastoController extends Controller
                 }
 
 		$em = $this->getDoctrine()->getManager();
-
-		$portador = new Pessoa();
-		$portador->setNomePessoa($vector[9]);
+		echo "passou 2";
+//		$portador = new Pessoa();
+//		$portador->setNomePessoa($vector[9]);
+                $portador = new Pessoa ($vector[12] , $vector[13]);
 		$em->persist($portador);
-
+		echo "passou";
 	        $favorecido = new Pessoa();
                 $favorecido->setNomePessoa($vector[13]);
 		$em->persist($favorecido);
@@ -131,7 +132,6 @@ class GastoController extends Controller
 //		$gasto->setValorTransacao($vector[14]);
 		$gasto->setValorTransacao(100.00);
 		$em->persist($gasto);
-
 		$em->flush();
 		echo "flushou!";
 	}

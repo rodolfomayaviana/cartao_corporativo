@@ -17,7 +17,6 @@ class Orgao
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -53,6 +52,21 @@ class Orgao
         return $this;
     }
 
+/**
+     * Set id
+     *
+     * @param int $idOrgao
+     *
+     * @return orgao
+     */
+    public function setId($idOrgao)
+    {
+        $this->id = $idOrgao;
+
+        return $this;
+    }
+
+
     /**
      * Get nomeOrgao
      *
@@ -62,4 +76,12 @@ class Orgao
     {
         return $this->nomeOrgao;
     }
+
+   public function __contruct($idOrgao , $nomeOrgao) {
+
+	$this->id = $idOrgao;
+	$this->nomeOrgao = $nomeOrgao;
+	echo $this->id;
+	echo $this->nomeOrgao;
+  }
 }

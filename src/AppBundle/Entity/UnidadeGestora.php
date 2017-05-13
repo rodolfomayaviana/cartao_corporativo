@@ -17,7 +17,6 @@ class UnidadeGestora
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -27,7 +26,6 @@ class UnidadeGestora
      * @ORM\Column(name="nomeUnidade", type="string", length=255)
      */
     private $nomeUnidade;
-
 
     /**
      * Get id
@@ -61,5 +59,11 @@ class UnidadeGestora
     public function getNomeUnidade()
     {
         return $this->nomeUnidade;
+    }
+
+    public function __construct ($idUnidade , $nomeUnidade) {
+
+	$this->id = $indUnidade;
+	$this->nomeUnidade = $nomeUnidade;
     }
 }

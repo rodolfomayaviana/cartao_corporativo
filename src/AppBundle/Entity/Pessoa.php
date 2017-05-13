@@ -40,6 +40,21 @@ class Pessoa
     }
 
     /**
+     * Set id
+     *
+     * @param string $id
+     *
+     * @return Pessoa
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+
+    /**
      * Set nomePessoa
      *
      * @param string $nomePessoa
@@ -61,5 +76,12 @@ class Pessoa
     public function getNomePessoa()
     {
         return $this->nomePessoa;
+    }
+
+    public function __construct($idfrJntSrf , $nomePessoa) {
+
+	$this->setId = $idfrJntSrf;
+	$this->setNomePessoa = $nomePessoa;
+
     }
 }
