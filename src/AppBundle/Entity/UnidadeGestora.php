@@ -63,7 +63,7 @@ class UnidadeGestora
 
     public function __construct ($idUnidade , $nomeUnidade) {
 
-	$this->id = $indUnidade;
+	$this->id = $idUnidade;
 	$this->nomeUnidade = $nomeUnidade;
     }
 }
