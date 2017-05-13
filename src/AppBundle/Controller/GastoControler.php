@@ -19,7 +19,7 @@ class GastoController extends Controller {
         	return;
 	}
 
-	public function createPortador($nomePortador , $orgaoSubordinado )  {
+	public function createGasto($nomePortador , $orgaoSubordinado )  {
 
 		$Portador = new Portador($nomePortador , $orgaoSubordinado);
 		$Portador->setNomePortador($nomePortador);
