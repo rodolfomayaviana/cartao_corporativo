@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Favorecido
 {
     /**
-     * @var int
+     * @var bigint
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="bigint")
      * @ORM\Id
      */
     private $id;

@@ -30,13 +30,13 @@ class DownloadController extends Controller
 
 		$this->gastoController = new GastoController($this->em);
 		$this->portadorController = new PortadorController($this->em);
-		$this->favorecidoControlller = new FavorecidoController($this->em);
+		$this->favorecidoController = new FavorecidoController($this->em);
 		$this->orgaoController = new OrgaoController($this->em);
 		$this->unidadeController = new UnidadeController($this->em);
 
-		$this->baixaArquivo(2016 , 03 );
-		$this->extraiZip(2016 , 03 );
-		$this->trataRegistro ( 2016 , 03);
+		$this->baixaArquivo(2016 , 05 );
+		$this->extraiZip(2016 , 05 );
+		$this->trataRegistro ( 2016 , 05);
 
 		 return new Response (
                 '<html><body>Banco de dados atualizado</body></html>');
@@ -117,85 +117,77 @@ class DownloadController extends Controller
 
 		$qtRegistros = count($vector);
 
-		echo "Total de campos " . $qtRegistros;
-
 // Despreza registro com quantidade menor de campos - dados secretos
 
-		if( $qtRegistros != 15) {
+		if(substr($vector[12] , 0 , 3)  ==  "Inf") {
                         return;
                 }
 
 // Trata orgao superior
 
-		$orgaoSuperior = $this->OrgaoController->getOrgaoById($vector[0]);
+		$orgaoSuperior = $this->orgaoController->getOrgaoById($vector[0]);
 
-		if $orgaoSuperior == null) {
-			$orgaoSuperior = $this->OrgaoController->createOrgao($vector[0] , $vector[1]);
+		$nomeSemEspecial = strtr(utf8_decode($vector[1]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
+
+		if ($orgaoSuperior == null) {
+			$orgaoSuperior = $this->orgaoController->createOrgao($vector[0] , $nomeSemEspecial);
+
 		}
 
 // Trata orgao subordinado
 
-		$orgaoSubordinado = $this->OrgaoController->getOrgaoById($vector[2]);
+		$orgaoSubordinado = $this->orgaoController->getOrgaoById($vector[2]);
+
+		$nomeSemEspecial = strtr(utf8_decode($vector[3]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
 
                 if ($orgaoSubordinado == null) {
-                        $orgaoSubordinado = $this->OrgaoController->createOrgao($vector[2] , $vector[3]);
-                }
+                        $orgaoSubordinado = $this->orgaoController->createOrgao($vector[2] , $vector[3]);
+		}
 
 // Trata portador
+		$nomeSemEspecial = strtr(utf8_decode($vector[9]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
 
-		$portador = $this->PortadorController->getPortadorByName($vector[9]);
+		$portador = $this->portadorController->getPortadorByNome($nomeSemEspecial);
 
 		if ($portador == null) {
-			$this->PortadorController->createPortador($vector[9] , $orgaoSubordinado);
-               }
+			$this->portadorController->createPortador($nomeSemEspecial , $orgaoSubordinado);
+
+		}
 
 // Trata favorecido
+// Saque nao vem com CNPJ do favorecido. Portanto, e desviado para o valor 1 (nao existe esse CNPJ ou CPF
 
-                $favorecido = $this->FavorecidoController->getFavorecidoById($vector[12]);
+		if (substr($vector[10] , 0 , 5)  == "SAQUE") {
+			$vector[12] = 1;
+		}
+// Ha registros em que existe informacao do nome do proprietario, mas nao seu CPF. Nesse caso eh informado o cpf 2 para todos. Verificar regra
+
+		if (strlen($vector[12]) == 0 ) {
+			$vector[12] = 2;
+		}
+		$nomeSemEspecial = strtr(utf8_decode($vector[13]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
+
+		$favorecido = $this->favorecidoController->getFavorecidoById($vector[12]);
 
                 if ($favorecido == null) {
-                        $this->FavorecidoController->createFavorecido($vector[12] , $vector[13]);
-               }
+                        $this->favorecidoController->createFavorecido($vector[12] , $nomeSemEspecial);
 
-		$portador = $t ($vector[12] , $vector[13]);
-		$em->persist($portador);
-		echo "passou";
-	        $favorecido = new Pessoa();
-                $favorecido->setNomePessoa($vector[13]);
-		$em->persist($favorecido);
+		}
 
-		$orgaoSuperior = new Orgao();
-		$orgaoSuperior->setNomeOrgao($vector[1]);
-		$em->persist($orgaoSuperior);
+// Trata  Unidade gestora
 
-		$orgaoSubordinado = new Orgao();
-                $orgaoSubordinado->setNomeOrgao($vector[3]);
-		$em->persist($orgaoSubordinado);
+                $unidadeGestora = $this->unidadeController->getUnidadeById($vector[4]);
 
-		$unidadeGestora = new UnidadeGestora();
-                $unidadeGestora->setNomeUnidade($vector[5]);
-		$em->persist($orgaoSubordinado);
+		$nomeSemEspecial = strtr(utf8_decode($vector[5]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
 
-		$gasto = new Gasto($em);
-		$gasto->setOrgaoSuperior($orgaoSuperior);
-		$gasto->setOrgaoSubordinado($orgaoSubordinado);
-		$gasto->setUnidadeGestora($unidadeGestora);
-		$gasto->setAnoExtrato($vector[6]);
-		$gasto->setMesExtrato($vector[7]);
-		$gasto->setPortador($portador);
+		if ($unidadeGestora == null) {
+			$this->unidadeController->createUnidade($vector[4] , $nomeSemEspecial);
+		}
 
-		echo "ID portador ";
-		echo  $portador->getId();
-		echo "Nome portador "; 
-		echo $portador->getNomePessoa();
-		$gasto->setNomeTransacao($vector[10]);
-		$gasto->setDataTransacao($vector[11]);
-		$gasto->setFavorecido($favorecido);
-//		$gasto->setValorTransacao($vector[14]);
-		$gasto->setValorTransacao(100.00);
-		$em->persist($gasto);
-		$em->flush();
-		echo "flushou!";
+		$valorTransacao = str_replace("," , "." , $vector[14]);
+
+		$nomeSemEspecial = preg_replace("[^a-zA-Z0-9_]", "", strtr($vector[10], "áàãâéêíóôõúüçÁÀÃÂÉÊÍÓÔÕÚÜÇ ", "aaaaeeiooouucAAAAEEIOOOUUC_"));
+		$gasto = $this->gastoController->createGasto($orgaoSuperior , $orgaoSubordinado , $unidadeGestora , $vector[6] , $vector[7] , $portador , $nomeSemEspecial , $vector[11] , $favorecido , $valorTransacao);
     }
 
     public function __autoload ($classe) {
