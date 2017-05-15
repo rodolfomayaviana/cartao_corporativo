@@ -24,10 +24,12 @@ class DownloadController extends Controller
     /**
      * @Route("/download", name="download")
      */
-    public function BuscaDadoAction(Request $request) {
+//    public function BuscaDadoAction(Request $request) {
+      public fuuncion BuscaDadoAction($em) {
 
-		$this->em = $this->getDoctrine()->getManager();
+//		$this->em = $this->getDoctrine()->getManager();
 
+		$this->em = $em;
 		$this->gastoController = new GastoController($this->em);
 		$this->portadorController = new PortadorController($this->em);
 		$this->favorecidoController = new FavorecidoController($this->em);
