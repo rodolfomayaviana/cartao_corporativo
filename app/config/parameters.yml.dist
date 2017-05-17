@@ -2,11 +2,12 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host: 127.0.0.1
-    database_port: ~
-    database_name: symfony
-    database_user: root
-    database_password: ~
+    database_host: ec2-50-19-83-146.compute-1.amazonaws.com
+    database_port: 5432
+    database_name: dejplg4e6t1f9l
+    database_user: rhjqztgjhsibli
+    database_password: 7a5534a17bf2326f02104260c3e160a0b9b62c44ca60ac160aa54a2165dc81b7
+    # database_url: ~
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.root_dir%/../var/data/data.sqlite'
 
@@ -17,3 +18,5 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+
+    monolog_action_level: error

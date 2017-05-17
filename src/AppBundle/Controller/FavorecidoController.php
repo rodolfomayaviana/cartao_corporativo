@@ -21,11 +21,13 @@ class FavorecidoController extends Controller {
 
 	public function createFavorecido($idfrSRF , $nomeFavorecido )  {
 
-		$favorecido = new Favorecido( $idfrSRF , $nomeFavorecido);
+		$favorecido = new Favorecido();
 
-
+		$favorecido->setId($idfrSRF);
+		$favorecido->setNomeFavorecido($nomeFavorecido);
 		$this->em->persist($favorecido);
                 $this->em->flush();
+		return $favorecido;
 	}
 
 	public function getFavorecidoById ($idfrSRF) {

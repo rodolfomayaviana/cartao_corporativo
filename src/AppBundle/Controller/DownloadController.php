@@ -24,21 +24,21 @@ class DownloadController extends Controller
     /**
      * @Route("/download", name="download")
      */
-//    public function BuscaDadoAction(Request $request) {
-      public fuuncion BuscaDadoAction($em) {
+    public function BuscaDadoAction(Request $request) {
+//      public function BuscaDadoAction($em) {
 
-//		$this->em = $this->getDoctrine()->getManager();
+		$this->em = $this->getDoctrine()->getManager();
 
-		$this->em = $em;
+//		$this->em = $em;
 		$this->gastoController = new GastoController($this->em);
 		$this->portadorController = new PortadorController($this->em);
 		$this->favorecidoController = new FavorecidoController($this->em);
 		$this->orgaoController = new OrgaoController($this->em);
 		$this->unidadeController = new UnidadeController($this->em);
 
-		$this->baixaArquivo(2016 , 05 );
-		$this->extraiZip(2016 , 05 );
-		$this->trataRegistro ( 2016 , 05);
+		$this->baixaArquivo(2016 , 12 );
+		$this->extraiZip(2016 , 12 );
+		$this->trataRegistro ( 2016 , 12);
 
 		 return new Response (
                 '<html><body>Banco de dados atualizado</body></html>');
@@ -99,7 +99,7 @@ class DownloadController extends Controller
     public function trataRegistro($ano , $mes) {
 
 		$handle = fopen("archive/" . str_pad($ano, 4, '0', STR_PAD_LEFT) . str_pad($mes, 2, '0', STR_PAD_LEFT) . "_CPGF.csv", "r");
-                $line = fgets($handle);
+             //   $line = fgets($handle);
 		if ($handle) {
 			$line = fgets($handle);
 			while (($line = fgets($handle)) !== false) {
@@ -152,7 +152,7 @@ class DownloadController extends Controller
 		$portador = $this->portadorController->getPortadorByNome($nomeSemEspecial);
 
 		if ($portador == null) {
-			$this->portadorController->createPortador($nomeSemEspecial , $orgaoSubordinado);
+			$portador = $this->portadorController->createPortador($nomeSemEspecial , $orgaoSubordinado);
 
 		}
 
@@ -171,8 +171,8 @@ class DownloadController extends Controller
 
 		$favorecido = $this->favorecidoController->getFavorecidoById($vector[12]);
 
-                if ($favorecido == null) {
-                        $this->favorecidoController->createFavorecido($vector[12] , $nomeSemEspecial);
+                if ($favorecido === null) {
+                        $favorecido = $this->favorecidoController->createFavorecido($vector[12] , $nomeSemEspecial);
 
 		}
 
@@ -183,12 +183,17 @@ class DownloadController extends Controller
 		$nomeSemEspecial = strtr(utf8_decode($vector[5]),utf8_decode('ŠŒŽšœžŸ¥µÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýÿ'),'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy');
 
 		if ($unidadeGestora == null) {
-			$this->unidadeController->createUnidade($vector[4] , $nomeSemEspecial);
+			$unidadeGestora = $this->unidadeController->createUnidade($vector[4] , $nomeSemEspecial);
 		}
 
 		$valorTransacao = str_replace("," , "." , $vector[14]);
 
 		$nomeSemEspecial = preg_replace("[^a-zA-Z0-9_]", "", strtr($vector[10], "áàãâéêíóôõúüçÁÀÃÂÉÊÍÓÔÕÚÜÇ ", "aaaaeeiooouucAAAAEEIOOOUUC_"));
+
+         //       echo "superior" . $orgaoSuperior->getId();
+         //       echo "subordinado" . $orgaoSubordinado->getId();
+        //        echo "unidade" . $unidadeGestora->getId();
+       //         echo "favorecido" . $favorecido->getId();
 		$gasto = $this->gastoController->createGasto($orgaoSuperior , $orgaoSubordinado , $unidadeGestora , $vector[6] , $vector[7] , $portador , $nomeSemEspecial , $vector[11] , $favorecido , $valorTransacao);
     }
 

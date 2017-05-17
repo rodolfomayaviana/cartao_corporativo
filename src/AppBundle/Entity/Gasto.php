@@ -24,21 +24,25 @@ class Gasto
     /**
      * @var \stdClass
      *
-     * @ORM\Column(name="orgaoSuperior", type="object")
+     * @ORM\ManyToOne(targetEntity="Orgao", inversedBy="orgaosSuperiores")
+     * @ORM\JoinColumn(name="orgaoSuperior_id", referencedColumnName="id")
+
      */
     private $orgaoSuperior;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="orgaoSubordinado", type="object")
+     * @var
+     * @ORM\ManyToOne(targetEntity="Orgao", inversedBy="orgaosSubordinados")
+     * @ORM\JoinColumn(name="orgaoSubordinado_id", referencedColumnName="id")
      */
+
     private $orgaoSubordinado;
 
     /**
      * @var \stdClass
      *
-     * @ORM\Column(name="unidadeGestora", type="object")
+     * @ORM\ManyToOne(targetEntity="UnidadeGestora", inversedBy="id")
+     * @ORM\JoinColumn(name="unidadeGestora_id", referencedColumnName="id")
      */
     private $unidadeGestora;
 
@@ -59,8 +63,10 @@ class Gasto
     /**
      * @var \stdClass
      *
-     * @ORM\Column(name="portador", type="object")
+     * @ORM\ManyToOne(targetEntity="Portador", inversedBy="nomePortador")
+     * @ORM\JoinColumn(name="portador_nome", referencedColumnName="nomePortador")
      */
+
     private $portador;
 
     /**
@@ -80,8 +86,10 @@ class Gasto
     /**
      * @var \stdClass
      *
-     * @ORM\Column(name="favorecido", type="object")
+     * @ORM\ManyToOne(targetEntity="Favorecido", inversedBy="gastos")
+     * @ORM\JoinColumn(name="favorecido_id", referencedColumnName="id")
      */
+
     private $favorecido;
 
     /**

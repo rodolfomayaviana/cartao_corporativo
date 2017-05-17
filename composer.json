@@ -54,7 +54,11 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
-        ]
+        ],
+	"warmup": [
+        "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+        "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache"
+    ]
     },
     "config": {
         "sort-packages": true
@@ -67,7 +71,10 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "app/config/parameters.yml",
+	    "env-map": {
+		"database_url": "DATABASE_URL",
+		"monolog_action_level": "LOG_LEVEL"
         },
         "branch-alias": null
     }

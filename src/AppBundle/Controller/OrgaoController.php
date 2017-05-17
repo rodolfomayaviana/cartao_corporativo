@@ -26,6 +26,7 @@ class OrgaoController extends Controller {
 		$Orgao->setId($idOrgao);
 		$this->em->persist($Orgao);
                 $this->em->flush();
+		return $Orgao;
 	}
 
 	public function getOrgaoById ($idOrgao) {

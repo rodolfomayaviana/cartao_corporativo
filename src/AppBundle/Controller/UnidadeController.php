@@ -26,6 +26,8 @@ class UnidadeController extends Controller {
 	//	$unidadeGestora->setId($idOrgao);
 		$this->em->persist($unidadeGestora);
                 $this->em->flush();
+		return $unidadeGestora;
+
 	}
 
 	public function getUnidadeById ($idUnidade) {

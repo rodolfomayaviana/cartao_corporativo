@@ -27,6 +27,12 @@ class Favorecido
      */
     private $nomeFavorecido;
 
+  /**
+     * @var Collection
+     * @ORM\Column(name="gastos", type="array")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="favorecido")
+     */
+    private $gastos;
 
     /**
      * Get id
@@ -62,10 +68,25 @@ class Favorecido
         return $this->nomeFavorecido;
     }
 
-    public function __construct($idFavorecido , $nomeFavorecido) {
+//    public function __construct($idFavorecido , $nomeFavorecido) {
+//
+//	$this->id = $idFavorecido;
+//	$this->nomeFavorecido = $nomeFavorecido; 
+//   }
+   /**
+     * Set id
+     *
+     * @param bigint $idFavorecido
+     *
+     * @return Favorecido
+     */
+    public function setId($idFavorecido)
+    {
+        $this->id = $idFavorecido;
 
-	$this->id = $idFavorecido;
-	$this->nomeFavorecido = $nomeFavorecido; 
-   }
+        return $this;
+    }
+
+
 }
 

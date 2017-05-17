@@ -23,13 +23,20 @@ class Portador
     private $nomePortador;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="OrgaoSubordinado", type="object")
-     * @ORM\ ManyToOne(targetEntity="Orgao")
+     * @var
+     * @ORM\ManyToOne(targetEntity="Orgao", inversedBy="portadores")
+     * @ORM\JoinColumn(name="orgao_id", referencedColumnName="id")
      */
     private $orgaoSubordinado;
-    /**
+
+   /**
+     * @var Collection
+     * @ORM\Column(name="gastos", type="array")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="portador")
+     */
+    private $gastos;
+
+     /**
      * Set orgaoSubordinado
      *
      * @param \stdClass $orgaoSubordinado

@@ -28,10 +28,18 @@ class UnidadeGestora
     private $nomeUnidade;
 
     /**
+     * @var Collection
+     * @ORM\Column(name="gastos", type="array")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="UnidadeGestora")
+     */
+    private $gastos;
+
+    /**
      * Get id
      *
      * @return int
      */
+
     public function getId()
     {
         return $this->id;

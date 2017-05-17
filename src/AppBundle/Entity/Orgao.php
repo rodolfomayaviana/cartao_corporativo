@@ -14,7 +14,7 @@ class Orgao
 {
     /**
      * @var int
-     *
+     * 
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      */
@@ -26,6 +26,27 @@ class Orgao
      * @ORM\Column(name="nomeOrgao", type="string", length=255)
      */
     private $nomeOrgao;
+
+    /**
+     * @var Collection
+     * @ORM\Column(name="portadores", type="array")
+     * @ORM\OneToMany(targetEntity="Portador", mappedBy="nomePortador")
+     */
+    private $portadores;
+
+    /**
+     * @var Collection
+     * @ORM\Column(name="orgaosSuperiores", type="array")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="orgaoSuperior")
+     */
+    private $orgaosSuperiores;
+
+    /**
+     * @var Collection
+     * @ORM\Column(name="orgaosSubordinados", type="array")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="orgaoSubordinado")
+     */
+    private $orgaosSubordinados;
 
 
     /**
