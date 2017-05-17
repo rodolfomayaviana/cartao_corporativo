@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Portador" table="portador">
+    <indexes>
+      <index name="IDX_6E1E0CD25CF83614" columns="orgao_id"/>
+    </indexes>
+    <id name="nomePortador" type="string" column="nomePortador" length="255">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="gastos" type="string" column="gastos" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="orgaoSubordinado" target-entity="Orgao" fetch="LAZY">
+      <join-columns>
+        <join-column name="orgao_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\Orgao;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Portador
@@ -16,7 +17,6 @@ class Portador
 
     /**
      * @var string
-     *
      * @ORM\Column(name="nomePortador", type="string", length=255)
      * @ORM\Id
     */
@@ -29,11 +29,7 @@ class Portador
      */
     private $orgaoSubordinado;
 
-   /**
-     * @var Collection
-     * @ORM\Column(name="gastos", type="array")
-     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="portador")
-     */
+
     private $gastos;
 
      /**
@@ -84,10 +80,10 @@ class Portador
         return $this->nomePortador;
     }
 
-    public function __construct($nomePortador , $orgaoSubordinado) {
-
-	$this->orgaoSubordinado = $orgaoSubordinado;
-	$this->nomePortador = $nomePortador;
+    public function __construct()
+    {
+    	$this->gastos = new ArrayCollection();
     }
+
 }
 

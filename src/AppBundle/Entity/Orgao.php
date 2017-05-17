@@ -22,7 +22,6 @@ class Orgao
 
     /**
      * @var string
-     *
      * @ORM\Column(name="nomeOrgao", type="string", length=255)
      */
     private $nomeOrgao;

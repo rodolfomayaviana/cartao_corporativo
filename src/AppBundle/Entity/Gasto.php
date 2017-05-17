@@ -13,20 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 class Gasto
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    * @var int
+    * @ORM\Column(name="id", type="integer")
+    * @ORM\Id
+    * @ORM\GeneratedValue(strategy="AUTO")
+    */
     private $id;
 
     /**
      * @var \stdClass
-     *
      * @ORM\ManyToOne(targetEntity="Orgao", inversedBy="orgaosSuperiores")
      * @ORM\JoinColumn(name="orgaoSuperior_id", referencedColumnName="id")
-
      */
     private $orgaoSuperior;
 
@@ -41,7 +38,7 @@ class Gasto
     /**
      * @var \stdClass
      *
-     * @ORM\ManyToOne(targetEntity="UnidadeGestora", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="UnidadeGestora", inversedBy="gastos")
      * @ORM\JoinColumn(name="unidadeGestora_id", referencedColumnName="id")
      */
     private $unidadeGestora;
@@ -63,10 +60,9 @@ class Gasto
     /**
      * @var \stdClass
      *
-     * @ORM\ManyToOne(targetEntity="Portador", inversedBy="nomePortador")
+     * @ORM\ManyToOne(targetEntity="Portador", inversedBy="gastos")
      * @ORM\JoinColumn(name="portador_nome", referencedColumnName="nomePortador")
      */
-
     private $portador;
 
     /**

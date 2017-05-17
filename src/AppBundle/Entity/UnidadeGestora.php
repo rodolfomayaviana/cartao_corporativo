@@ -30,7 +30,7 @@ class UnidadeGestora
     /**
      * @var Collection
      * @ORM\Column(name="gastos", type="array")
-     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="UnidadeGestora")
+     * @ORM\OneToMany(targetEntity="Gasto", mappedBy="unidadeGestora")
      */
     private $gastos;
 
